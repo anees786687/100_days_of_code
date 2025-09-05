@@ -1,0 +1,16 @@
+2025-09-04 01:41:39,145 - pomodoro_pro - INFO - Pomodoro Timer initialized
+2025-09-04 01:41:39,149 - pomodoro_pro - INFO - Pomodoro Timer initialized
+2025-09-04 01:41:39,150 - pomodoro_pro - INFO - Pomodoro Timer initialized
+2025-09-04 01:41:39,150 - pomodoro_pro - INFO - work session completed
+2025-09-04 01:41:39,151 - pomodoro_pro - INFO - Starting long_break timer for 20 minutes
+2025-09-04 01:41:39,152 - pomodoro_pro - INFO - Pomodoro Timer initialized
+2025-09-04 01:41:39,152 - pomodoro_pro - INFO - work session completed
+2025-09-04 01:41:39,153 - pomodoro_pro - INFO - Starting short_break timer for 5 minutes
+2025-09-04 01:42:47,321 - __main__ - INFO - Pomodoro Timer initialized
+2025-09-04 01:42:47,385 - __main__ - INFO - Tomato image loaded successfully
+2025-09-04 01:42:47,388 - __main__ - INFO - UI setup completed successfully
+2025-09-04 01:42:47,389 - __main__ - INFO - Starting Pomodoro Timer application
+2025-09-04 01:42:49,858 - __main__ - INFO - Starting work timer for 25 minutes
+2025-09-04 01:42:52,069 - __main__ - INFO - Timer reset requested
+2025-09-04 01:42:52,069 - __main__ - INFO - Timer reset completed
+2025-09-04 01:42:59,648 - __main__ - INFO - Application shutting down

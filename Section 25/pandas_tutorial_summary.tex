@@ -1,0 +1,592 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+% Code styling
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\lstset{style=pythonstyle}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Pandas \& Data Analysis Tutorial}
+\lhead{100 Days of Code - Section 25}
+\cfoot{\thepage}
+
+\title{\textbf{Comprehensive Pandas Data Analysis Tutorial Summary}}
+\author{100 Days of Code - Section 25}
+\date{August 26, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This document provides a comprehensive summary of the pandas data analysis tutorial covering both theoretical concepts and practical implementation. The material is derived from two primary sources:
+\begin{itemize}
+    \item \texttt{pandas\_tut.ipynb} - Jupyter notebook with pandas fundamentals
+    \item \texttt{state\_guess\_game.py} - Practical application using pandas with GUI
+\end{itemize}
+
+\section{Data Reading and File Handling Methodologies}
+
+\subsection{Traditional File Reading Approach}
+
+The tutorial begins by demonstrating the limitations of traditional file reading methods:
+
+\begin{lstlisting}
+# Traditional approach - problematic for data analysis
+with open('weather_data.csv') as weather_data:
+    content = weather_data.readlines()
+    print(content)
+\end{lstlisting}
+
+\textbf{Problems identified:}
+\begin{itemize}
+    \item Returns raw strings with comma separation
+    \item Requires manual parsing and data cleaning
+    \item Difficult to work with for statistical analysis
+    \item No automatic data type inference
+\end{itemize}
+
+\subsection{CSV Module Methodology}
+
+The next approach demonstrates using Python's built-in CSV module:
+
+\begin{lstlisting}
+import csv
+
+with open('weather_data.csv') as data_file:
+    data = csv.reader(data_file)
+    temperatures = []
+    for rows in data:
+        print(rows)  # Each row separated into individual values
+        if rows[1] != 'temp':  # Skip header row
+            temperatures.append(int(rows[1]))
+    print(temperatures)
+\end{lstlisting}
+
+\textbf{Improvements over raw file reading:}
+\begin{itemize}
+    \item Automatic CSV parsing
+    \item Values separated into list elements
+    \item Still requires manual iteration and filtering
+\end{itemize}
+
+\subsection{Pandas Approach - The Superior Method}
+
+Pandas eliminates the complexity of manual data handling:
+
+\begin{lstlisting}
+import pandas as pd
+
+data = pd.read_csv('weather_data.csv')
+print(data["temp"])  # Direct column access
+\end{lstlisting}
+
+\textbf{Advantages demonstrated:}
+\begin{itemize}
+    \item Single line data import
+    \item Automatic data type inference
+    \item Built-in data structure optimization
+    \item Immediate access to statistical methods
+\end{itemize}
+
+\section{Pandas Data Structures}
+
+\subsection{DataFrame Object}
+
+The DataFrame represents the core 2-dimensional data structure in pandas:
+
+\begin{lstlisting}
+print(type(data))  # <class 'pandas.core.frame.DataFrame'>
+\end{lstlisting}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item 2-dimensional tabular structure
+    \item Heterogeneous data types supported
+    \item Labeled axes (rows and columns)
+    \item Size-mutable structure
+\end{itemize}
+
+\subsection{Series Object}
+
+Each column in a DataFrame is a Series object:
+
+\begin{lstlisting}
+print(type(data['temp']))  # <class 'pandas.core.series.Series'>
+\end{lstlisting}
+
+\textbf{Series properties:}
+\begin{itemize}
+    \item 1-dimensional labeled array
+    \item Homogeneous data type within series
+    \item Supports vectorized operations
+    \item Can be converted to Python lists
+\end{itemize}
+
+\section{Data Access and Selection Mechanisms}
+
+\subsection{Column Selection Methods}
+
+\textbf{Method 1: Dictionary-style access}
+\begin{lstlisting}
+temp_column = data["temp"]
+condition_column = data['condition']
+\end{lstlisting}
+
+\textbf{Method 2: Attribute-style access}
+\begin{lstlisting}
+temp_column = data.temp
+condition_column = data.condition
+print(type(data.condition))  # <class 'pandas.core.series.Series'>
+\end{lstlisting}
+
+\subsection{Row Selection with Boolean Indexing}
+
+Boolean indexing allows sophisticated data filtering:
+
+\begin{lstlisting}
+# Select rows where day is Monday
+monday_data = data[data.day == 'Monday']
+print(type(monday_data))  # Returns DataFrame object
+
+# Select rows with maximum temperature
+max_temp_data = data[data.temp == data.temp.max()]
+
+# Select rows with temperature less than 20
+cold_days = data[data.temp < 20]
+\end{lstlisting}
+
+\textbf{Advanced row selection example:}
+\begin{lstlisting}
+# Get temperature on Monday
+monday_row = data[data.day == 'Monday']
+monday_temperature = monday_row.temp
+print(type(monday_row), monday_row.temp)
+\end{lstlisting}
+
+\section{Data Conversion and Export Operations}
+
+\subsection{DataFrame to Dictionary Conversion}
+
+\begin{lstlisting}
+# Convert entire DataFrame to nested dictionary
+data_dict = data.to_dict()
+print(data_dict)  # Dictionary of dictionaries structure
+\end{lstlisting}
+
+\subsection{Series to List Conversion}
+
+\begin{lstlisting}
+# Convert Series to Python list for traditional operations
+temp_list = data['temp'].to_list()
+print(temp_list)  # Can perform standard list operations
+\end{lstlisting}
+
+\subsection{DataFrame Export to CSV}
+
+\begin{lstlisting}
+# Save DataFrame as CSV file
+data.to_csv('./exported_data.csv')
+\end{lstlisting}
+
+\section{Statistical Operations and Analysis}
+
+\subsection{Manual Statistical Calculations}
+
+\begin{lstlisting}
+# Manual average calculation using list operations
+avg_temp = sum(temp_list) / len(temp_list)
+print(avg_temp)
+\end{lstlisting}
+
+\subsection{Built-in Pandas Statistical Methods}
+
+Pandas provides optimized statistical functions:
+
+\begin{lstlisting}
+# Built-in statistical methods
+print(data['temp'].mean())    # Calculate average
+print(data['temp'].max())     # Find maximum value
+print(data['temp'].min())     # Find minimum value
+print(data['temp'].std())     # Standard deviation
+print(data['temp'].sum())     # Sum of all values
+\end{lstlisting}
+
+\section{Data Cleaning and Preprocessing}
+
+\subsection{Handling Missing Data}
+
+The tutorial demonstrates data cleaning with the Central Park Squirrel Census:
+
+\begin{lstlisting}
+# Load large dataset
+squirrel_data = pd.read_csv('2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv')
+
+# Extract column and remove missing values
+squirrel_colors = squirrel_data['Primary Fur Color'].dropna()
+
+# Count unique values
+color_counts = squirrel_colors.value_counts()
+
+# Export processed data
+color_counts.to_csv('./squirrel_counts.csv')
+\end{lstlisting}
+
+\textbf{Data cleaning pipeline:}
+\begin{enumerate}
+    \item Load raw data with \texttt{pd.read\_csv()}
+    \item Extract relevant columns
+    \item Remove missing values with \texttt{.dropna()}
+    \item Perform analysis with \texttt{.value\_counts()}
+    \item Export results with \texttt{.to\_csv()}
+\end{enumerate}
+
+\section{Creating DataFrames from Scratch}
+
+\subsection{Dictionary of Lists Approach}
+
+\begin{lstlisting}
+# Create DataFrame from dictionary of lists
+data_dict = {
+    'students': ['Amy', 'James', 'Angela'],
+    'scores': [76, 56, 65]
+}
+
+# Convert to DataFrame
+student_data = pd.DataFrame(data_dict)
+print(student_data)
+
+# Save as CSV
+student_data.to_csv('./student_data.csv')
+\end{lstlisting}
+
+\subsection{Common Error: Scalar Values Without Index}
+
+\textbf{Error demonstration:}
+\begin{lstlisting}
+# This causes error: "If using all scalar values, you must pass an index"
+error_dict = {
+    'students': 'Amy',  # Scalar value, not list
+    'scores': 76        # Scalar value, not list
+}
+# pd.DataFrame(error_dict)  # Raises ValueError
+\end{lstlisting}
+
+\textbf{Solutions:}
+\begin{lstlisting}
+# Solution 1: Use lists
+correct_dict = {
+    'students': ['Amy'],
+    'scores': [76]
+}
+df1 = pd.DataFrame(correct_dict)
+
+# Solution 2: Provide index for scalars
+scalar_dict = {
+    'students': 'Amy',
+    'scores': 76
+}
+df2 = pd.DataFrame(scalar_dict, index=[0])
+\end{lstlisting}
+
+\section{Practical Application: US States Guessing Game}
+
+\subsection{Integration of Pandas with GUI Programming}
+
+The state guessing game demonstrates practical pandas integration:
+
+\begin{lstlisting}
+import pandas as pd
+import turtle as t
+from PIL import Image
+
+# Load state coordinate data
+states = pd.read_csv('./50_states.csv')
+
+# Convert DataFrame columns to lists for game logic
+state_list = states.state.to_list()
+state_x = states.x.to_list()
+state_y = states.y.to_list()
+\end{lstlisting}
+
+\subsection{Data-Driven Game Logic}
+
+\begin{lstlisting}
+def game_loop():
+    guess = screen.textinput('User Input', 'Enter the name of the state')
+    
+    if guess not in state_list:
+        # Handle invalid input
+        warning_turt.write(f'No state named {guess}', 
+                          align='center', 
+                          font=('Arial', 20, 'normal'))
+    else:
+        # Use pandas data for positioning
+        state_index = state_list.index(guess)
+        x_val = state_x[state_index]
+        y_val = state_y[state_index]
+        
+        # Draw state name at correct coordinates
+        writer_turt.goto(x_val, y_val)
+        writer_turt.write(f'{guess}', 
+                         align='center', 
+                         font=('Arial', 10, 'normal'))
+\end{lstlisting}
+
+\subsection{Image Processing Integration}
+
+\begin{lstlisting}
+# Dynamic screen sizing based on image dimensions
+img = Image.open('./blank_states_img.gif')
+width, height = img.size  # (725, 491)
+
+screen = t.Screen()
+screen.screensize(canvwidth=width, canvheight=height)
+screen.bgpic('./blank_states_img.gif')
+\end{lstlisting}
+
+\section{Advanced Data Analysis Patterns}
+
+\subsection{Chained Operations}
+
+The tutorial demonstrates method chaining for efficient data processing:
+
+\begin{lstlisting}
+# Chain multiple operations together
+result = (squirrel_data['Primary Fur Color']
+          .dropna()
+          .value_counts()
+          .to_dict())
+\end{lstlisting}
+
+\subsection{Temperature Conversion Example}
+
+\begin{lstlisting}
+# Celsius to Fahrenheit conversion using pandas
+monday_data = data[data.day == 'Monday']
+monday_temp_F = (monday_data.temp) * (9/5) + 32
+print(monday_temp_F)
+\end{lstlisting}
+
+\section{Jupyter Notebook Specific Features}
+
+\subsection{Variable Management}
+
+\begin{lstlisting}
+# Reset all variables in Jupyter
+%reset
+
+# Note: This can cause NameError if variables used afterward
+# Demonstration of variable scope issues
+\end{lstlisting}
+
+\subsection{Interactive Data Exploration}
+
+The notebook format allows for incremental data exploration:
+\begin{itemize}
+    \item Cell-by-cell execution
+    \item Variable persistence across cells
+    \item Immediate output visualization
+    \item Easy experimentation with different approaches
+\end{itemize}
+
+\section{Performance and Efficiency Considerations}
+
+\subsection{Pandas vs Manual Processing}
+
+\textbf{Manual approach (multiple lines):}
+\begin{lstlisting}
+# Manual statistical calculation
+total = 0
+count = 0
+for temp in temp_list:
+    total += temp
+    count += 1
+average = total / count
+\end{lstlisting}
+
+\textbf{Pandas approach (single line):}
+\begin{lstlisting}
+# Optimized pandas calculation
+average = data['temp'].mean()
+\end{lstlisting}
+
+\subsection{Memory Efficiency}
+
+Pandas operations are optimized for:
+\begin{itemize}
+    \item Vectorized operations
+    \item Memory-efficient data storage
+    \item Automatic garbage collection
+    \item Lazy evaluation where applicable
+\end{itemize}
+
+\section{Error Handling and Debugging}
+
+\subsection{Common Errors Encountered}
+
+\textbf{1. Scalar Values Error:}
+\begin{verbatim}
+ValueError: If using all scalar values, you must pass an index
+\end{verbatim}
+
+\textbf{2. Variable Scope After Reset:}
+\begin{verbatim}
+NameError: name 'temp_list' is not defined
+\end{verbatim}
+
+\textbf{3. Missing File Errors:}
+\begin{verbatim}
+FileNotFoundError: [Errno 2] No such file or directory
+\end{verbatim}
+
+\subsection{Debugging Strategies}
+
+\begin{lstlisting}
+# Type checking for debugging
+print(type(data))           # Check object type
+print(data.dtypes)          # Check column data types
+print(data.shape)           # Check dimensions
+print(data.head())          # Preview first few rows
+print(data.info())          # Summary information
+\end{lstlisting}
+
+\section{File Organization and Project Structure}
+
+\subsection{Data Files Used}
+
+\begin{itemize}
+    \item \texttt{weather\_data.csv} - Sample weather data for learning
+    \item \texttt{50\_states.csv} - US state coordinates for game
+    \item \texttt{2018\_Central\_Park\_Squirrel\_Census\_-\_Squirrel\_Data.csv} - Real dataset
+    \item \texttt{blank\_states\_img.gif} - Map image for visualization
+\end{itemize}
+
+\subsection{Generated Output Files}
+
+\begin{itemize}
+    \item \texttt{student\_data.csv} - Created from scratch example
+    \item \texttt{squirrel\_counts.csv} - Processed squirrel color data
+\end{itemize}
+
+\section{Integration with Other Libraries}
+
+\subsection{Turtle Graphics Integration}
+
+\begin{lstlisting}
+# Seamless integration with turtle for visualization
+import turtle as t
+import pandas as pd
+
+# Use pandas data to control turtle graphics
+for i, state in enumerate(state_list):
+    turtle.goto(state_x[i], state_y[i])
+    turtle.write(state)
+\end{lstlisting}
+
+\subsection{PIL (Python Imaging Library) Integration}
+
+\begin{lstlisting}
+# Image processing for dynamic sizing
+from PIL import Image
+img = Image.open('./blank_states_img.gif')
+width, height = img.size
+# Use dimensions to configure display
+\end{lstlisting}
+
+\section{Best Practices Demonstrated}
+
+\subsection{Code Organization}
+
+\begin{enumerate}
+    \item Import all required libraries at the beginning
+    \item Use descriptive variable names
+    \item Comment code for clarity
+    \item Separate data processing from visualization
+    \item Handle edge cases (missing data, user input validation)
+\end{enumerate}
+
+\subsection{Data Processing Workflow}
+
+\begin{enumerate}
+    \item \textbf{Load:} Import data using \texttt{pd.read\_csv()}
+    \item \textbf{Explore:} Use \texttt{.head()}, \texttt{.info()}, \texttt{.describe()}
+    \item \textbf{Clean:} Handle missing values with \texttt{.dropna()}
+    \item \textbf{Analyze:} Apply statistical methods and filtering
+    \item \textbf{Export:} Save results using \texttt{.to\_csv()}
+\end{enumerate}
+
+\section{Learning Progression Summary}
+
+\subsection{Skill Development Path}
+
+\begin{enumerate}
+    \item \textbf{Basic File I/O} $\rightarrow$ Understanding data import challenges
+    \item \textbf{CSV Module} $\rightarrow$ Intermediate parsing techniques
+    \item \textbf{Pandas Fundamentals} $\rightarrow$ Modern data analysis tools
+    \item \textbf{Data Structures} $\rightarrow$ DataFrame and Series mastery
+    \item \textbf{Data Selection} $\rightarrow$ Boolean indexing and filtering
+    \item \textbf{Statistical Analysis} $\rightarrow$ Built-in mathematical functions
+    \item \textbf{Data Export} $\rightarrow$ Saving processed results
+    \item \textbf{Real-world Application} $\rightarrow$ Interactive game development
+\end{enumerate}
+
+\subsection{Key Concepts Mastered}
+
+\begin{itemize}
+    \item Data import from various file formats
+    \item DataFrame and Series manipulation
+    \item Boolean indexing for data filtering
+    \item Statistical analysis using built-in methods
+    \item Data cleaning and preprocessing
+    \item Integration with GUI programming
+    \item Error handling and debugging
+    \item Performance optimization through vectorization
+\end{itemize}
+
+\section{Conclusion}
+
+This comprehensive tutorial demonstrates the progression from basic file handling to sophisticated data analysis using pandas. The material covers both theoretical foundations and practical applications, culminating in an interactive application that integrates multiple libraries.
+
+The key takeaway is pandas' ability to transform complex data manipulation tasks into simple, readable code while providing powerful analytical capabilities. The tutorial successfully bridges the gap between academic data science concepts and real-world application development.
+
+The US States Guessing Game serves as an excellent capstone project, demonstrating how pandas can be integrated with GUI programming, image processing, and interactive user experiences, showcasing the versatility and power of pandas in practical software development.
+
+\end{document}

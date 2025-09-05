@@ -1,0 +1,383 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Code styling
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\lstset{style=pythonstyle}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Python Comprehensions Summary}
+\lhead{Section 26 - 100 Days of Code}
+\cfoot{\thepage}
+
+\title{\textbf{Python List and Dictionary Comprehensions\\Complete Learning Summary}}
+\author{Udemy 100 Days of Code - Section 26}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This document provides a comprehensive summary of Python list and dictionary comprehensions learned in Section 26 of the 100 Days of Code course. Comprehensions are a Pythonic way to create lists, dictionaries, and other iterables in a concise and readable manner.
+
+\section{List Comprehensions}
+
+\subsection{Basic Concept}
+
+List comprehensions provide a concise way to create lists. Instead of using traditional for loops with append operations, we can create lists in a single line of code.
+
+\subsubsection{Traditional Approach vs List Comprehension}
+
+\textbf{Traditional approach:}
+\begin{lstlisting}
+numbers = [1, 2, 3]
+new_list = []
+for n in numbers:
+    add_1 = n + 1
+    new_list.append(add_1)
+\end{lstlisting}
+
+\textbf{List comprehension approach:}
+\begin{lstlisting}
+numbers = [1, 2, 3]
+new_list = [n + 1 for n in numbers]
+\end{lstlisting}
+
+\subsection{Basic Structure}
+
+The fundamental structure of a list comprehension is:
+\begin{center}
+\texttt{new\_list = [new\_item for item in list]}
+\end{center}
+
+Where:
+\begin{itemize}
+    \item \texttt{new\_item} is the expression to be evaluated for each item
+    \item \texttt{item} is the variable representing each element
+    \item \texttt{list} is the iterable being processed
+\end{itemize}
+
+\subsection{Examples from Your Code}
+
+\subsubsection{Squaring Numbers}
+\begin{lstlisting}
+numbers = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+squared_numbers = [num ** 2 for num in numbers]
+# Output: [1, 1, 4, 9, 25, 64, 169, 441, 1156, 3025]
+\end{lstlisting}
+
+\subsubsection{Working with Strings}
+\begin{lstlisting}
+name = 'Anees'
+name_list = [letter for letter in name]
+# Output: ['A', 'n', 'e', 'e', 's']
+\end{lstlisting}
+
+\subsubsection{Using Range}
+\begin{lstlisting}
+double_num = [num * 2 for num in range(1, 5)]
+# Output: [2, 4, 6, 8]
+\end{lstlisting}
+
+\subsection{Conditional List Comprehensions}
+
+You can add conditions to filter elements during the comprehension process.
+
+\subsubsection{Structure}
+\begin{center}
+\texttt{new\_list = [new\_item for item in list if test]}
+\end{center}
+
+\subsubsection{Examples}
+
+\textbf{Filtering Even Numbers:}
+\begin{lstlisting}
+list_of_strings = ['9', '0', '32', '8', '2', '8', '64', '29', '42', '99']
+numbers = [int(num) for num in list_of_strings]
+result = [num for num in numbers if num % 2 == 0]
+# Output: [0, 32, 8, 2, 8, 64, 42]
+\end{lstlisting}
+
+\textbf{Filtering by Name Length:}
+\begin{lstlisting}
+names = ['Alex', 'Beth', 'Caroline', 'Dave', 'Eleanor', 'Freddie']
+short_names = [name for name in names if len(name) <= 5]
+# Output: ['Alex', 'Beth', 'Dave']
+\end{lstlisting}
+
+\textbf{Combining Transformation and Filtering:}
+\begin{lstlisting}
+cap_names = [name.upper() for name in names if len(name) > 5]
+# Output: ['CAROLINE', 'ELEANOR', 'FREDDIE']
+\end{lstlisting}
+
+\subsection{Multiple For Loops in List Comprehensions}
+
+\subsubsection{General Structure}
+\begin{lstlisting}
+[(expression) 
+ for item1 in iterable1 if condition1 
+ for item2 in iterable2 if condition2
+ ...]
+\end{lstlisting}
+
+\subsubsection{Example: Creating Pairs}
+\begin{lstlisting}
+list1 = [1, 2, 3, 4]
+list2 = ['a', 'b', 'e', 'i']
+result = [(x, y) for x in list1 if x % 2 == 0 for y in list2 if y in 'aeiou']
+# Output: [(2, 'a'), (2, 'e'), (2, 'i'), (4, 'a'), (4, 'e'), (4, 'i')]
+\end{lstlisting}
+
+\subsection{Practical Application: File Processing}
+
+Your code demonstrates reading from two files and finding common elements:
+\begin{lstlisting}
+with open('./file1.txt') as file:
+    num_list_1 = file.read().splitlines()
+
+with open('./file2.txt') as file:
+    num_list_2 = file.read().splitlines()
+
+result = [int(num) for num in num_list_1 if num in num_list_2]
+\end{lstlisting}
+
+\section{Dictionary Comprehensions}
+
+\subsection{Basic Concept}
+
+Dictionary comprehensions allow you to create dictionaries in a concise and readable way, similar to list comprehensions but for key-value pairs.
+
+\subsection{Basic Structures}
+
+\subsubsection{From a List}
+\begin{center}
+\texttt{new\_dict = \{new\_key: new\_value for item in list\}}
+\end{center}
+
+\subsubsection{From an Existing Dictionary}
+\begin{center}
+\texttt{new\_dict = \{new\_key: new\_value for (key, value) in dict.items()\}}
+\end{center}
+
+\subsubsection{With Conditions}
+\begin{center}
+\texttt{new\_dict = \{new\_key: new\_value for (key, value) in dict.items() if test\}}
+\end{center}
+
+\subsection{Examples from Your Code}
+
+\subsubsection{Random Score Generation}
+\begin{lstlisting}
+import random
+names = ['Alex', 'Beth', 'Caroline', 'Dave', 'Eleanor', 'Freddie']
+score_dict = {f'{name}': random.randint(1, 100) for name in names}
+# Example output: {'Alex': 67, 'Beth': 23, 'Caroline': 89, ...}
+\end{lstlisting}
+
+\subsubsection{Filtering Passed Students}
+\begin{lstlisting}
+passed_dict = {name: score for (name, score) in score_dict.items() if score >= 40}
+# Output: Students with scores >= 40
+\end{lstlisting}
+
+\subsubsection{Word Length Calculation}
+\begin{lstlisting}
+sentence = "What is the Airspeed Velocity of an Unladen Swallow?"
+word_list = sentence.split(" ")
+result = {word: len(word) for word in word_list}
+# Output: {'What': 4, 'is': 2, 'the': 3, 'Airspeed': 8, ...}
+\end{lstlisting}
+
+\subsubsection{Temperature Conversion}
+\begin{lstlisting}
+def convert_C_to_F(temp: int):
+    return temp * 9/5 + 32
+
+weather_c = {"Monday": 12, "Tuesday": 14, "Wednesday": 15, 
+             "Thursday": 14, "Friday": 21, "Saturday": 22, "Sunday": 24}
+
+weather_f = {day: convert_C_to_F(temp) for (day, temp) in weather_c.items()}
+# Output: Temperature converted from Celsius to Fahrenheit
+\end{lstlisting}
+
+\subsection{Multiple For Loops in Dictionary Comprehensions}
+
+\subsubsection{General Structure}
+\begin{lstlisting}
+{key_expression: value_expression
+ for item1 in iterable1 if condition1
+ for item2 in iterable2 if condition2
+ ...}
+\end{lstlisting}
+
+\subsubsection{Complex Example}
+\begin{lstlisting}
+list1 = [1, 2, 3, 4]
+list2 = ['a', 'b', 'e', 'i']
+result = {(x, y): f"{x}-{y}" for x in list1 if x % 2 == 0 
+          for y in list2 if y in 'aeiou'}
+# Output: {(2, 'a'): '2-a', (2, 'e'): '2-e', (2, 'i'): '2-i', 
+#          (4, 'a'): '4-a', (4, 'e'): '4-e', (4, 'i'): '4-i'}
+\end{lstlisting}
+
+\section{Nested Comprehensions}
+
+\subsection{List Comprehension in Dictionary Comprehension}
+
+\subsubsection{Example: Student Grades Filtering}
+\begin{lstlisting}
+grades = {
+    "Alice": [78, 85, 90, 67],
+    "Bob": [88, 72, 95, 80],
+    "Charlie": [60, 82, 91, 87]
+}
+
+high_grades = {student: [grade for grade in scores if grade > 80] 
+               for student, scores in grades.items()}
+# Output: {'Alice': [85, 90], 'Bob': [88, 95], 'Charlie': [82, 91, 87]}
+\end{lstlisting}
+
+\subsection{Dictionary Comprehension in List Comprehension}
+
+\subsubsection{Example: Word Length Dictionaries}
+\begin{lstlisting}
+sentences = [
+    "hello world",
+    "python is fun",
+    "list and dict comprehensions"
+]
+
+word_length_dicts = [{word: len(word) for word in sentence.split()} 
+                     for sentence in sentences]
+# Output: [{'hello': 5, 'world': 5}, 
+#          {'python': 6, 'is': 2, 'fun': 3}, 
+#          {'list': 4, 'and': 3, 'dict': 4, 'comprehensions': 15}]
+\end{lstlisting}
+
+\section{Real-World Application: NATO Alphabet Project}
+
+Your NATO alphabet project demonstrates an advanced use of list comprehensions with pandas integration:
+
+\begin{lstlisting}
+import pandas as pd
+
+name = input('Enter your name: ')
+nato_data = pd.read_csv('./nato_phonetic_alphabet.csv')
+
+code_list = [row.code for letter in name 
+             for (_, row) in nato_data.iterrows() 
+             if letter.upper() == row.letter]
+print(code_list)
+\end{lstlisting}
+
+This example shows:
+\begin{itemize}
+    \item Multiple for loops in a single comprehension
+    \item Integration with pandas DataFrames
+    \item Conditional filtering based on user input
+    \item Practical application for real-world problems
+\end{itemize}
+
+\section{Best Practices and Key Takeaways}
+
+\subsection{When to Use Comprehensions}
+
+\begin{itemize}
+    \item When creating new collections from existing ones
+    \item For simple transformations and filtering operations
+    \item When readability is improved over traditional loops
+    \item For functional programming approaches
+\end{itemize}
+
+\subsection{When NOT to Use Comprehensions}
+
+\begin{itemize}
+    \item When the logic becomes too complex
+    \item When multiple operations need to be performed
+    \item When debugging is required (traditional loops are easier to debug)
+    \item When side effects are needed (comprehensions should be pure)
+\end{itemize}
+
+\subsection{Performance Benefits}
+
+Comprehensions are generally faster than equivalent for loops because:
+\begin{itemize}
+    \item They are optimized at the C level in CPython
+    \item They avoid repeated method lookups
+    \item They allocate memory more efficiently
+\end{itemize}
+
+\subsection{Readability Guidelines}
+
+\begin{itemize}
+    \item Keep comprehensions simple and readable
+    \item Use meaningful variable names
+    \item Break complex comprehensions into multiple steps
+    \item Consider using traditional loops for complex logic
+\end{itemize}
+
+\section{Summary of Learning Outcomes}
+
+Through this section, you have learned:
+
+\begin{enumerate}
+    \item \textbf{Basic List Comprehensions}: Creating lists with transformations
+    \item \textbf{Conditional List Comprehensions}: Filtering elements during creation
+    \item \textbf{Multiple For Loops}: Complex iteration patterns
+    \item \textbf{Dictionary Comprehensions}: Creating dictionaries efficiently
+    \item \textbf{Nested Comprehensions}: Combining different comprehension types
+    \item \textbf{Real-world Applications}: Practical projects like NATO alphabet converter
+    \item \textbf{File Processing}: Reading and processing data from files
+    \item \textbf{Data Transformation}: Converting between different data formats
+    \item \textbf{Integration with Libraries}: Using comprehensions with pandas
+\end{enumerate}
+
+\section{Conclusion}
+
+List and dictionary comprehensions are powerful Python features that enable concise, readable, and efficient code. They represent a fundamental shift from imperative to more functional programming paradigms. Your learning progression from basic transformations to complex nested comprehensions with real-world applications demonstrates a solid understanding of these concepts.
+
+The NATO alphabet project particularly showcases the practical application of these concepts in a real-world scenario, combining multiple advanced techniques including pandas integration, file I/O, and complex filtering logic.
+
+Mastering comprehensions is essential for writing Pythonic code and will serve as a foundation for more advanced Python programming concepts.
+
+\end{document}

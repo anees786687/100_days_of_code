@@ -1,0 +1,14 @@
+Creating a virtual environment in python
+1. Open terminal
+2. Type - python -m venv {environment_name}
+3. Start environment - .\{environment_name}\Scripts\activate.ps1
+
+----------------------------------------------------------------
+
+Pandas documentation
+
+https://pandas.pydata.org/docs/
+
+Pandas API reference
+
+https://pandas.pydata.org/docs/reference/index.html

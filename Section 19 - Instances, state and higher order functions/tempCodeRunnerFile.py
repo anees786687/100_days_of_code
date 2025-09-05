@@ -1,0 +1,1 @@
+screen.onkey(key="Left", fun=turn_left) # binds turn left

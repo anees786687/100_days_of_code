@@ -1,0 +1,1 @@
+screen.window_width() // 2
