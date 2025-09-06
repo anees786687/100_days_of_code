@@ -23,6 +23,7 @@ Creating a virtual environment in python
 
 * **Tkinter tutorials** https://tkdocs.com/tutorial/index.html
 * **TCL/TK docs** https://www.tcl-lang.org/man/tcl8.6/TkCmd/contents.htm
+* **Canvas docs** https://tkdocs.com/tutorial/canvas.html
 
 
 

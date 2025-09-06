@@ -52,7 +52,7 @@ class PassWordGen:
         
         try:
             # Load and display logo image
-            img_path = os.path.join(os.path.dirname(__file__), 'logo.png')
+            img_path = os.path.join(os.path.dirname(__file__), './password-manager-start/logo.png')
             self.logo = PhotoImage(file=img_path)
             self.canvas.create_image(100, 95, image=self.logo)  # Centered positioning
         except Exception as e:
@@ -77,9 +77,8 @@ class PassWordGen:
             self.website_frame,
             width=30,
             font=('Arial', 10),
-            highlightthickness=1,
-            highlightbackground='#b0b0b0',  # Light grey border
-            highlightcolor='#b0b0b0'
+            highlightthickness=2,
+            highlightcolor='blue'
         )
         self.website_entry.grid(row=0, column=1, sticky='w')
         
@@ -88,7 +87,7 @@ class PassWordGen:
         
         # Validation feedback label
         self.website_valid_info = Label(self.website_frame, text="", fg="red", font=('Arial', 10))
-        self.website_valid_info.grid(row=1, column=1, sticky='w')
+        self.website_valid_info.grid(row=0, column=2, sticky='w')
         
         # --- Email Input Section ---
         self.email_frame = Frame(self.data_frame)
@@ -101,9 +100,8 @@ class PassWordGen:
             self.email_frame,
             width=30,
             font=('Arial', 10),
-            highlightthickness=1,
-            highlightbackground='#b0b0b0',
-            highlightcolor='#b0b0b0'
+            highlightthickness=2,
+            highlightcolor='blue'
         )
         self.email_entry.grid(row=0, column=1, sticky='w')
         
@@ -111,7 +109,7 @@ class PassWordGen:
         self.email_entry.bind('<KeyRelease>', lambda event: self.check_email(self.email_entry.get()))
         
         self.email_valid_info = Label(self.email_frame, text="", fg="red", font=('Arial', 10))
-        self.email_valid_info.grid(row=1, column=1, sticky='w')
+        self.email_valid_info.grid(row=0, column=2, sticky='w')
 
         # --- Username Input Section (Optional) ---
         self.username_frame = Frame(self.data_frame)
@@ -124,9 +122,9 @@ class PassWordGen:
             self.username_frame,
             width=30,
             font=('Arial', 10),
-            highlightthickness=1,
-            highlightbackground='#b0b0b0',
-            highlightcolor='#b0b0b0',
+            highlightthickness=2,
+            
+            highlightcolor='blue',
         )
         self.username_entry.grid(row=0, column=1, sticky='w', padx=(0, 5))
 
@@ -141,9 +139,8 @@ class PassWordGen:
             self.pass_frame,
             width=30,
             font=('Arial', 10),
-            highlightthickness=1,
-            highlightbackground='#b0b0b0',
-            highlightcolor='#b0b0b0'
+            highlightthickness=2,
+            highlightcolor='blue'
         )
         self.pass_entry.grid(row=0, column=1, sticky='w', padx=(0, 5))
         
@@ -151,7 +148,7 @@ class PassWordGen:
         self.pass_entry.bind('<KeyRelease>', lambda event: self.check_pass(self.pass_entry.get()))
         
         self.pass_valid_info = Label(self.pass_frame, text="", fg="red", font=('Arial', 10))
-        self.pass_valid_info.grid(row=1, column=1, sticky='w')
+        self.pass_valid_info.grid(row=1, column=1, sticky='ew')
         
         # Password generation button
         self.gen_pass_button = Button(self.pass_frame, text='Generate Password', width=15, command=self.gen_pass)
@@ -181,7 +178,24 @@ class PassWordGen:
             self.email_good = False
             self.pass_good = False
             self.url_good = False
+
+            # Clearing the fields
+            self.website_entry.delete(0, len(self.website))
+            self.website_entry.config(highlightthickness=0)
+            self.website_valid_info.config(text="")
+
+            if self.username:
+                self.username_entry.delete(0, len(self.username))
+                self.username_entry.config(highlightthickness=0)
             
+            self.email_entry.delete(0, len(self.email))
+            self.email_entry.config(highlightthickness=0)
+            self.email_valid_info.config(text="")
+
+            self.pass_entry.delete(0, len(self.passwd))
+            self.pass_entry.config(highlightthickness=0)
+            self.pass_valid_info.config(text="")
+
             print(f'website: {self.website}, email: {self.email}, pass: {self.passwd}')
             
             # Save to file with proper formatting
@@ -213,6 +227,7 @@ class PassWordGen:
         # Clear field and insert new password
         self.pass_entry.delete(0, len(random_password))
         self.pass_entry.insert(0, random_password)
+        self.check_pass(random_password)
         print(random_password)
 
     def check_email(self, email: str):
