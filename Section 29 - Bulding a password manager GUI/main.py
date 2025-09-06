@@ -8,8 +8,8 @@ Features:
 - Data persistence to text file
 - User-friendly GUI with visual feedback
 
-Author: Your Name
-Date: September 2025
+Author: Anees Alwani
+Date: 5th September 2025
 """
 
 from tkinter import *
