@@ -212,7 +212,9 @@ class PassWordGen:
         except KeyError:
             # Handle case where website is not found in existing data
             messagebox.showerror(title='Error!', message='No such entry for the website!')
+            f.close()
             return
+       
 
     def get_deets(self):
         """
@@ -276,7 +278,7 @@ class PassWordGen:
                 }
                 # Update existing data with new entry
                 self.json_deets.update(new_json_obj)
-               
+                file.close()
             except FileNotFoundError:
                 # If file doesn't exist, create new data structure
                 new_json_obj = {
@@ -302,6 +304,7 @@ class PassWordGen:
 
                 # Clear the in-memory data after saving
                 self.json_deets = {}
+                file.close()
 
     def gen_pass(self):
         """
