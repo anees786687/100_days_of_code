@@ -1,6 +1,6 @@
 # 🔒 Password Manager GUI
 
-A secure and user-friendly password manager built with Python's Tkinter library. This application provides real-time validation, automatic password generation, and secure local storage of your credentials.
+A secure and user-friendly password manager built with Python's Tkinter library. This application provides real-time validation, automatic password generation, secure local storage, and search functionality for your credentials.
 
 ![Password Manager Screenshot](logo.png)
 
@@ -8,10 +8,12 @@ A secure and user-friendly password manager built with Python's Tkinter library.
 
 - **Real-time Input Validation**: Instant feedback with color-coded borders and messages
 - **Secure Password Generation**: Create strong 12-character passwords with mixed character types
-- **Data Persistence**: Save credentials to a local text file
+- **Data Persistence**: Save credentials to a local JSON file
+- **Search Functionality**: Quickly find existing website credentials
 - **User-friendly Interface**: Clean, intuitive GUI with visual feedback
 - **Input Sanitization**: Automatic trimming of whitespace from inputs
 - **Optional Username Field**: Flexibility for sites that use usernames instead of emails
+- **Error Handling**: Robust file operations with proper exception handling
 
 ## 🚀 Getting Started
 
@@ -34,149 +36,128 @@ python main.py
 
 ### Adding a New Password Entry
 
-1. **Website**: Enter the website URL (format: www.example.com)
-2. **Email**: Enter your email address
+1. **Website**: Enter the website name (any format accepted)
+2. **Email**: Enter your email address (validated in real-time)
 3. **Username**: (Optional) Enter username if the site uses usernames
-4. **Password**: Enter your password or use the "Generate Password" button
-5. **Add**: Click the "Add" button to save (only works when all required fields are valid)
+4. **Password**: Enter password manually or click "Generate Password"
+5. **Save**: Click "Add" to save the entry
 
-### Real-time Validation
+### Searching for Existing Entries
 
-The application provides instant feedback as you type:
-
-- ✅ **Green border/text**: Valid input
-- ❌ **Red border/text**: Invalid input
-
-#### Validation Rules
-
-- **Website**: Must follow format `www.domain.extension`
-- **Email**: Must be a valid email format (user@domain.extension)
-- **Password**: Minimum 12 characters, containing letters, numbers, and special characters
+1. Enter the website name in the **Website** field
+2. Click the **Search** button
+3. If found, credentials will be displayed in a popup
 
 ### Password Generation
 
-Click the "Generate Password" button to create a secure 12-character password that includes:
-- Lowercase letters (a-z)
-- Uppercase letters (A-Z)
-- Numbers (0-9)
-- Special characters (!@#$%^&*())
-
-## 💾 Data Storage
-
-Passwords are saved to `passwords.txt` in the following format:
-
-```
-website:www.example.com|email:user@email.com|pass:securepassword123
-website:www.github.com|username:myusername|email:user@email.com|pass:anotherpassword456
-```
+1. Click the **"Generate Password"** button
+2. A secure 12-character password will be automatically created
+3. The password includes uppercase, lowercase, numbers, and special characters
 
 ## 🔧 Technical Details
 
-### Architecture
+### Validation Rules
 
-The application follows an object-oriented design with a single `PassWordGen` class that handles:
+- **Email**: Must follow standard email format (user@domain.extension)
+- **Password**: Minimum 12 characters, allows letters, numbers, and special characters
+- **Website**: Any non-empty string is accepted
 
-- GUI initialization and layout
-- Real-time input validation using regex patterns
-- Event handling for user interactions
-- File I/O operations for data persistence
+### File Format
 
-### Key Technologies
+Data is stored in `passwords.json` with the following structure:
 
-- **Tkinter**: GUI framework
-- **Regular Expressions**: Input validation
-- **Event Binding**: Real-time validation using `<KeyRelease>` events
-- **File I/O**: Local data storage
-
-### Validation Patterns
-
-```python
-# Email validation
-r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
-
-# Website validation  
-r'^www\.[A-Za-z0-9]+\.[a-zA-Z]+$'
-
-# Password validation
-r'[A-Za-z0-9!@#$%^&*()]{12,}'
+```json
+{
+  "website_name": {
+    "email": "user@example.com",
+    "password": "secure_password_123",
+    "username": "optional_username"
+  }
+}
 ```
 
-## 📁 File Structure
+### Real-time Validation
 
-```
-password-manager/
-│
-├── main.py              # Main application file
-├── logo.png            # Application logo (optional)
-├── passwords.txt       # Generated password storage file
-└── README.md           # This file
-```
+- **Green borders/text**: Valid input
+- **Red borders/text**: Invalid input
+- Validation occurs as you type (on `KeyRelease` events)
 
-## 🛡️ Security Considerations
+## 🔐 Security Considerations
 
-⚠️ **Important Security Notes:**
+⚠️ **IMPORTANT SECURITY NOTES:**
 
-- Passwords are stored in **plain text** in `passwords.txt`
-- This is a **learning project** and not suitable for production use
-- For real password management, use established tools like:
+- This is a **learning project** and should NOT be used for real password management
+- Passwords are stored in **plain text** JSON format
+- No encryption or master password protection
+- For real use, consider established password managers like:
   - Bitwarden
-  - LastPass
   - 1Password
+  - LastPass
   - KeePass
 
-## 🔮 Future Enhancements
+## 🛠️ Code Structure
 
-Potential improvements for this project:
+### Classes and Methods
 
-- [ ] **Encryption**: Encrypt stored passwords
-- [ ] **Master Password**: Add authentication to access the app
-- [ ] **Search Functionality**: Find stored passwords by website
-- [ ] **Edit/Delete**: Modify or remove existing entries
-- [ ] **Import/Export**: CSV or JSON file support
-- [ ] **Password Strength Meter**: Visual indicator of password strength
-- [ ] **Auto-fill**: Browser integration capabilities
-- [ ] **Backup**: Cloud storage options
+- **`PassWordGen`**: Main application class
+  - `init_ui()`: Creates the GUI interface
+  - `search_details()`: Searches for existing website entries
+  - `get_deets()`: Collects and saves user input
+  - `gen_pass()`: Generates secure random passwords
+  - `check_email()`: Validates email format
+  - `check_pass()`: Validates password strength
+  - `check_url()`: Validates website input
 
-## 🐛 Known Issues
+### Key Features
 
-- Logo image loading may fail if `logo.png` is not present (handled gracefully)
-- Website validation is strict and may not accept all valid URL formats
-- No duplicate checking - same website can be added multiple times
+- **Event-driven validation**: Uses Tkinter event binding for real-time feedback
+- **Exception handling**: Proper error handling for file operations
+- **Modular design**: Separate methods for different functionalities
+- **User feedback**: Visual and text feedback for all operations
 
-## 🤝 Contributing
-
-This is a learning project, but suggestions and improvements are welcome! Feel free to:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## 📚 Learning Objectives
+## 🎯 Learning Objectives
 
 This project demonstrates:
 
-- GUI development with Tkinter
-- Real-time input validation
-- Event-driven programming
-- File I/O operations
-- Regular expressions
-- Object-oriented programming
-- Error handling
+- **GUI Development**: Using Tkinter for desktop applications
+- **Input Validation**: Real-time form validation with regex
+- **File I/O**: Reading and writing JSON data
+- **Error Handling**: Try/except blocks for robust operation
+- **Event Handling**: Binding events to functions
+- **Object-Oriented Programming**: Class-based application structure
 
-## 📄 License
+## 🚀 Future Enhancements
 
-This project is open source and available under the [MIT License](LICENSE).
+Potential improvements could include:
+
+- [ ] **Encryption**: Add password encryption for security
+- [ ] **Master Password**: Implement master password protection
+- [ ] **Import/Export**: Add CSV import/export functionality
+- [ ] **Password Strength Meter**: Visual password strength indicator
+- [ ] **Backup Features**: Automatic backup of password database
+- [ ] **Dark Mode**: Theme switching capability
+- [ ] **Password History**: Track password changes over time
+- [ ] **Two-Factor Authentication**: TOTP code generation
+
+## 🤝 Contributing
+
+This is a learning project from the "100 Days of Code" course. Feel free to:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your improvements
+4. Submit a pull request
+
+## 📝 License
+
+This project is for educational purposes. Use responsibly and consider security implications before any real-world usage.
 
 ## 👨‍💻 Author
 
-Created as part of the "100 Days of Code" course on Udemy.
+**Anees Alwani**  
+*Date: September 5th, 2025*  
+*Project: 100 Days of Code - Section 29*
 
 ---
 
-**⚡ Quick Start Command:**
-```bash
-python main.py
-```
-
-**🎯 Remember:** This is a learning project. For real password management, use established, security-audited tools!
+⭐ **If you found this project helpful, please give it a star!**
