@@ -334,9 +334,7 @@ class PassWordGen:
         self.pass_entry.insert(0, random_password)
         # Validate the generated password immediately
         self.check_pass(random_password)
-        # Debug output to console
-        print(random_password)
-
+        
     def check_email(self, email: str):
         """
         Validate email format using regex pattern.
