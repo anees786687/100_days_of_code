@@ -16,8 +16,11 @@ except Exception as e:
         except Exception as e:
             print('Only alphabets are allowed! 2')
 
-    
-nato_data = pd.read_csv('./nato_phonetic_alphabet.csv')
+
+try:
+    nato_data = pd.read_csv('./nato_phonetic_alphabet.csv')
+except FileNotFoundError as fe:
+    print(f"File not found!")
 
 code_list = [row.code for letter in name for (_,row) in nato_data.iterrows() if letter.upper() == row.letter]
 print(code_list)
