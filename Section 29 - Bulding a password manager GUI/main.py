@@ -65,7 +65,8 @@ class PassWordGen:
             self.canvas.create_image(100, 95, image=self.logo)  # Centered positioning
         except Exception as e:
             # Handle case where logo file is missing or corrupted
-            print(f'Error while fetching image: {e}')
+            self.canvas.create_text(100,95,text='MyPass', fill='red', font=('Arial',30, "bold"))
+
         
         self.canvas.grid(row=0, column=0)
 
