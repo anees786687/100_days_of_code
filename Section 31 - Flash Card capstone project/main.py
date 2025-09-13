@@ -154,6 +154,7 @@ class FlashCard:
             self.canvas.itemconfig(self.canvas_language, text='')
             self.canvas.itemconfig(self.canvas_word, text='Good Job! Now bake your French wife\'s croissants'
                                    ,font=('Arial', 20, 'bold'))
+            self.random_word = None
             return False
 
     def start(self):
